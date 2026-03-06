@@ -2,6 +2,7 @@ from datetime import datetime
 import json
 
 
+print("Just fyi password and username go first in order to ensure the user cant come up with password as easily."/n/n/n/n)
 def login():
     print("welcome to the workout tracker")
     attempts = 0
@@ -133,3 +134,4 @@ while True:
                         break
                 except (ValueError, IndexError):
                     print("Invalid number please try again")
+
