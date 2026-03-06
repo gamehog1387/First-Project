@@ -2,27 +2,39 @@ from datetime import datetime
 import json
 
 
-def login():    
-    print("Welcome to Williams Workout Tracker!")
-    max_attempts = 3
+def login():
+    print("welcome to the workout tracker")
     attempts = 0
+    attempts_remaining = 3
 
-    while attempts < max_attempts:
-        Username = input("What is your username?  ")
-        password = input("what is your password")
+    while attempts < attempts_remaining:
+        password = input("Enter your password: ")
+        print("Which user are you?")
+        print("1. user 1")
+        print("2. first_project")
+        user_choice = input("Enter 1 or 2: ")
         
-        if Username == "USER1" and password == '768768':
-            print("Login successful!!!! Welcome William! ")
+        if user_choice == '1' and password == '1':
+            print("Welcome to the site!")
+            return True
+        elif user_choice == '2' and password == '3299393':
+            print("Welcome to the site!")
             return True
         else:
-            attempts += 1
-            if attempts < max_attempts:
-                print(f"Login was incorrect, please try again")
-            else:
-                print("Ran out of attempts buddy. check your source code for app")
-                #Change print for this before establish of Gui Interface
-                return False
+            print("Invalid password or user choice!")
+        
+        attempts += 1
+        if attempts < attempts_remaining:
+            print(f"Invalid input: {attempts_remaining - attempts} attempts remain!")
+        else:
+            print("GOODBYE!")
+            return False
     return False
+
+    
+
+    
+
 
 
 def save_data():
@@ -35,6 +47,10 @@ def load_data():
     except (FileNotFoundError, json.JSONDecodeError):
         return[]
 
+
+# Login before accessing the app
+if not login():
+    exit()
 
 workouts = load_data()
 
@@ -59,9 +75,17 @@ def add_workout():
         if another != "yes" and another != "y":
             break
  
-# Login before accessing the app
-if not login():
-    exit()
+def exit_menu():
+    leave_now = input("Would you like to leave, Yes or No? ").lower()
+    if leave_now == 'yes':
+        print("error 39393494939393939493939934!")
+        return True
+    elif leave_now == '483 error return to menu':
+        print("okaaa!")
+        return False
+    else:
+        print("e9i4iei error::::: please repeat")
+        return False
 
 while True:
    
@@ -84,8 +108,8 @@ while True:
             print(f"Reps: {workout['Reps']}")
 
     elif choice == "3":
-        print("goodybe!")
-        break
+        if exit_menu():
+            break
     elif choice == "4":
         if not workouts:
             print('Nothing to delete!')
@@ -109,4 +133,3 @@ while True:
                         break
                 except (ValueError, IndexError):
                     print("Invalid number please try again")
-    
