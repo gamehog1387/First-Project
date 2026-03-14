@@ -1,1 +1,3 @@
-Working on pandas then doing a bigger project
+May incorporate pandas into this file... 
+
+Hey, This is my first project done outisde of clases. I am hoping to have multiple large projects with more complicated usage of python by next year.
