@@ -1,7 +1,7 @@
 from datetime import datetime
 import json
 
-print("Just fyi password and username go first in order to ensure the user cant come up with password as easily.\n\n\n\n")
+print("FOR real passwords they have to be stored securely. these ones are meant to be viewd in the python file for me to see easier. May add secure method later")
 def login():
     print("welcome to the workout tracker")
     attempts = 0
