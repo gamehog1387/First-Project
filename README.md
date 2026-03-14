@@ -1,1 +1,1 @@
-# I rushed this, I am working on daily tracker as my project instead for the time being, its 3/11/2026. May go back to this but the daily tracker i plan to work on longer than this one and implement more functions.
+Working on pandas then doing a bigger project
