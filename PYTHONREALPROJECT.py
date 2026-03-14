@@ -1,8 +1,7 @@
 from datetime import datetime
 import json
 
-
-print("Just fyi password and username go first in order to ensure the user cant come up with password as easily."/n/n/n/n)
+print("Just fyi password and username go first in order to ensure the user cant come up with password as easily.\n\n\n\n")
 def login():
     print("welcome to the workout tracker")
     attempts = 0
@@ -17,10 +16,10 @@ def login():
         
         if user_choice == '1' and password == '1':
             print("Welcome to the site!")
-            return True
+            return "user_1"
         elif user_choice == '2' and password == '3299393':
             print("Welcome to the site!")
-            return True
+            return "first_project"
         else:
             print("Invalid password or user choice!")
         
@@ -29,36 +28,58 @@ def login():
             print(f"Invalid input: {attempts_remaining - attempts} attempts remain!")
         else:
             print("GOODBYE!")
-            return False
-    return False
+            return None
+    return None
 
     
-
+def double_verification():
+    print("Before entering")
+    attempts = 0
+    attempts_remaining = 3
+    while attempts < attempts_remaining:
+        color = input("what is your favorite color? ")
+        if color.lower() == 'blue':
+            return True
+        else:
+            attempts += 1
+            print(f"NOPE! attempts remaining = {attempts_remaining - attempts}")
+        print("Goodbye")
+        return'False'
+    
     
 
 
 
-def save_data():
-    with open("workouts.json", "w") as f:
+def save_data(username):
+    filename = f"workouts_{username}.json"
+    with open(filename, "w") as f:
         json.dump(workouts, f, indent=4)
-def load_data():
+
+def load_data(username):
+    filename = f"workouts_{username}.json"
     try:
-        with open("workouts.json", "r") as f:
+        with open(filename, "r") as f:
             return json.load(f)
     except (FileNotFoundError, json.JSONDecodeError):
         return[]
 
 
 # Login before accessing the app
-if not login():
+current_user = login()
+if not current_user:
     exit()
-
-workouts = load_data()
+if not double_verification():
+    exit()
+workouts = load_data(current_user)
 
 def add_workout():
     while True:
-        Excercise = input("Excercise Name? ")
-        Weight = int(input("Weight moved "))
+        try:
+            Excercise = input("Excercise Name? ")
+            Weight = int(input("Weight moved "))
+        except ValueError:
+            print("Invalid input for weight, please enter a number.")
+            continue
         Reps = int(input("How many Reps? "))
         current_date = datetime.now().strftime("%Y-%m-%d")
         workout = {
@@ -69,25 +90,60 @@ def add_workout():
         }
 
         workouts.append(workout)
-        save_data()
+        save_data(current_user)
         print("Workout Added!")
         
         another = input("Add another workout? (yes/no): ").lower()
         if another != "yes" and another != "y":
             break
- 
+        
+
 def exit_menu():
     leave_now = input("Would you like to leave, Yes or No? ").lower()
-    if leave_now == 'yes':
-        print("error 39393494939393939493939934!")
+    if leave_now.lower() == 'yes':
+        print("Okay<3 Goodybye!")
         return True
-    elif leave_now == '483 error return to menu':
+    elif leave_now.lower() == 'no':
         print("okaaa!")
         return False
     else:
         print("e9i4iei error::::: please repeat")
         return False
 
+def view_personal_records():
+    if not workouts:
+        print("No workouts recorded so far!")
+        return
+    pr_data = {}
+
+    for workout in workouts:
+        excercise = workout['Excercise']
+        weight = workout['Weight']
+        reps = workout['Reps']
+        volume = weight * reps
+
+        if excercise not in pr_data:
+            pr_data[excercise] = {
+                'max_weight': weight,
+                'max_reps': reps,
+                'max_volume': volume,
+                'date': workout['Date']
+            }
+        else:
+            if weight > pr_data[excercise]['max_weight']:
+                pr_data[excercise]['max_weight'] = weight
+                pr_data[excercise]['date'] = workout['Date']
+            if volume > pr_data[excercise]['max_volume']:
+                pr_data[excercise]['max_volume'] = volume
+
+    print("\n============== Personal Records ============")
+    for exercise, data in pr_data.items():
+        print(f"\n{exercise}")
+        print(f" Max weight: {data['max_weight']} lbs")
+        print(f" Max Reps: {data['max_reps']}")
+        print(f" Max volume (weight x reps): {data['max_volume']}")
+        print(f" Date: {data['date']}")
+        print("==========\n")
 while True:
    
     print("\n William's Workout Tracker")
@@ -95,6 +151,7 @@ while True:
     print("2. View Workout")
     print("3. Exit Workout")
     print("4. Delete Workout")
+    print("5. View Personal Records")
 
     choice = input(" Choose an Option ")
     if choice == "1":
@@ -107,6 +164,8 @@ while True:
             print(f"Excercise: {workout['Excercise']}")
             print(f"Weight: {workout['Weight']}")
             print(f"Reps: {workout['Reps']}")
+    elif choice == '5':
+        view_personal_records()
 
     elif choice == "3":
         if exit_menu():
@@ -123,7 +182,7 @@ while True:
                 try:
                     selection = int(input("Enter the number of the workout to delete: "))
                     removed_workout = workouts.pop(selection)
-                    save_data()
+                    save_data(current_user)
                     print (f"Deleted: {removed_workout['Excercise']}")
                     
                     more = input("Delete another workout? (yes/no): ").lower()
@@ -134,4 +193,3 @@ while True:
                         break
                 except (ValueError, IndexError):
                     print("Invalid number please try again")
-
